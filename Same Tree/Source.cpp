@@ -1,4 +1,5 @@
 #include <iostream>
+#include <algorithm>
 
 struct TreeNode {
     int val;
@@ -22,15 +23,32 @@ bool isSameTree(TreeNode* p, TreeNode* q) {
         }
     }
 }
- 
+int minDepth(TreeNode* root) {
+    if (root == NULL) {
+        return 0;
+    }
+    if (root->left == NULL && root->right == NULL) {
+        return 1;
+    }
+    if (root->left == NULL) {
+        return minDepth(root->right) + 1;
+    }
+    if (root->right == NULL) {
+        return minDepth(root->left) + 1;
+    }
+    return std::min(minDepth(root->left), minDepth(root->right)) + 1;
+}
+ //Given binary tree [3,9,20,null,null,15,7],
 int main() {
-    TreeNode *A = new TreeNode(1);
-    A->left = new TreeNode(2);
-    A->right = new TreeNode(3);
-    TreeNode* B = new TreeNode(1);
-    B->left = new TreeNode(NULL);
-    B->right = new TreeNode(3);
-    std::cout << isSameTree(A, B) << std::endl;
+    TreeNode *A = new TreeNode(3);
+    A->left = new TreeNode(9);
+    A->right = new TreeNode(20);
+    A->left->left = new TreeNode(NULL);
+    A->left->right = new TreeNode(NULL);
+    A->right->left = new TreeNode(15);
+    A->right->right = new TreeNode(7);
+
+    std::cout << minDepth(A) << std::endl;
     return 0;
 }
 
